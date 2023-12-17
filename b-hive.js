@@ -1,4 +1,5 @@
 function bhive() {
+c = document.getElementById("c");
 var w = c.width = window.innerWidth,
     h = c.height = window.innerHeight,
     ctx = c.getContext( '2d' ),
@@ -125,4 +126,4 @@ window.addEventListener( 'resize', function(){
   dieX = w / 2 / opts.len;
   dieY = h / 2 / opts.len;
 });
-};
+}

@@ -1,0 +1,22 @@
+# Simple docker file to clone a git repo and host its contents via nginx
+# assumes a static site with an index.html that lives in the root of the repo
+FROM nginx:alpine
+
+# FROM resets ARGs, so this has to be here.
+ARG giturl
+
+RUN apk add --no-cache git
+RUN git clone $giturl temp
+RUN mv temp/* /usr/share/nginx/html/
+
+# run nginx in foreground so container doesn't immediately exit.
+CMD ["nginx", "-g", "daemon off;"]
+
+# HOWTO:
+# To build this image, run `docker build -t {name} . --build-arg giturl={git repo url}`
+# The git repo url can be any static site with index.html at the root, like say: `https://github.com/lrusso/Emulatrix.git`
+
+# build command: docker build -t alpine/b-hive . --build-arg giturl={https://github.com/udp1024/b-hive.git}
+
+# alternatively use loca lfolder binding to provide the web server root files;
+# docker run -it --rm -d -p 80:80 --name web -v ~/projects/b-hive:/usr/share/nginx/html nginx
